@@ -1,0 +1,47 @@
+ing_unibo_scambi_homepage:
+    pattern:  /
+    defaults: { _controller: IngUniboScambiBundle:Default:index }
+
+ing_unibo_scambi_offerte_corso:
+    pattern:  /offerte/corso/{id}
+    defaults: { _controller: IngUniboScambiBundle:Offerte:corso }
+
+ing_unibo_scambi_offerte_dipartimento:
+    pattern:  /offerte/dipartimento/{id}
+    defaults: { _controller: IngUniboScambiBundle:Offerte:dipartimento }
+
+ing_unibo_scambi_offerte_sede:
+    pattern:  /offerte/sede/{id}
+    defaults: { _controller: IngUniboScambiBundle:Offerte:sede }
+
+ing_unibo_scambi_list_corsi:
+    pattern:  /list/corsi
+    defaults: { _controller: IngUniboScambiBundle:List:corsi }
+
+ing_unibo_scambi_list_dipartimenti:
+    pattern:  /list/dipartimenti
+    defaults: { _controller: IngUniboScambiBundle:List:dipartimenti }
+
+ing_unibo_scambi_list_sedi:
+    pattern:  /list/sedi
+    defaults: { _controller: IngUniboScambiBundle:List:sedi }
+
+ing_unibo_scambi_basket_add:
+    pattern:  /basket/add/{key}/{callback}
+    defaults: { _controller: IngUniboScambiBundle:Basket:add }
+
+ing_unibo_scambi_basket_rem:
+    pattern:  /basket/rem/{key}/{callback}
+    defaults: { _controller: IngUniboScambiBundle:Basket:rem }
+
+ing_unibo_scambi_basket_list:
+    pattern:  /basket/list
+    defaults: { _controller: IngUniboScambiBundle:Basket:list }
+
+ing_unibo_scambi_basket_union:
+    pattern:  /basket/union
+    defaults: { _controller: IngUniboScambiBundle:Basket:union }
+
+ing_unibo_scambi_basket_empty:
+    pattern:  /basket/empty/{callback}
+    defaults: { _controller: IngUniboScambiBundle:Basket:empty }

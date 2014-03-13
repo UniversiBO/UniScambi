@@ -1,0 +1,71 @@
+{% extends 'IngUniboScambiBundle::layout.html.twig' %}
+
+{% block content_header '' %}
+
+{% block content %}
+    {% set version = constant('Symfony\\Component\\HttpKernel\\Kernel::MAJOR_VERSION') ~ '.' ~ constant('Symfony\\Component\\HttpKernel\\Kernel::MINOR_VERSION')%}
+
+    <h1>Elenco corsi per i quali esistono offerte di scambio</h1>
+    <div class="row">
+  <div class="col-md-6">
+    <p>Elementi totali: {{pagination.getTotalItemCount}}</p>
+  </div>
+  <div class="col-md-2">&nbsp;</div>
+  <div class="col-md-4">
+<form class="form-horizontal" action="{{ path('ing_unibo_scambi_list_corsi') }}" method="get" role="form">
+  <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+            <input type="text" class="form-control" placeholder="Ricerca per denominazione o codice" name="search" {% if search is not empty %} value="{{search}}" {% endif %} onfocus="this.value='';" />
+        </div>
+  </div>
+</form>
+  </div>
+</div>
+
+{{ render(controller('IngUniboScambiBundle:Basket:list', {'callback':'ing_unibo_scambi_list_corsi'})) }}
+    
+    <table class="table">
+    	<tr>
+    		<th{% if pagination.isSorted('c.id') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Codice', 'c.id') }}</th>
+    		<th{% if pagination.isSorted('c.nome') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Denominazione', 'c.nome') }}</th>
+        <th>Dipartimento</th>
+        <th>Sede</th>
+        <!--<th{% if pagination.isSorted('c.dipartimento.nome') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Dipartimento', 'c.dipartimento.nome') }}</th>        
+        <th{% if pagination.isSorted('c.sede.nome') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Sede', 'c.sede.nome') }}</th>-->
+        <th>Seleziona</th>
+    	</tr>
+    	{% for corso in pagination %}
+    	<tr>
+    		<td>
+                <a href="{{path('ing_unibo_scambi_offerte_corso', {'id':corso.id})}}">{{ corso.id }}</a>
+            </td>
+            <td>
+                <a href="{{path('ing_unibo_scambi_offerte_corso', {'id':corso.id})}}">{{ corso.nome }}</a>
+            </td>
+            <td>
+                {{ corso.dipartimento.nome }}
+            </td>
+            <td>
+                {{ corso.sede.nome }}
+            </td>                        
+            <td>
+                {% if ('Corso:' ~ corso.id) in basket %}
+                <a href="{{path('ing_unibo_scambi_basket_rem', {'key':'Corso:' ~ corso.id, 'callback':'ing_unibo_scambi_list_corsi'})}}">
+                <button type="button" class="btn btn-xs btn-default">
+                    <span class="glyphicon glyphicon-check"></span>
+                </button>
+                </a>                                
+                {% else %}
+                <a href="{{path('ing_unibo_scambi_basket_add', {'key':'Corso:' ~ corso.id, 'callback':'ing_unibo_scambi_list_corsi'})}}">
+                <button type="button" class="btn btn-xs btn-default">
+                    <span class="glyphicon glyphicon-unchecked"></span>
+                </button>
+                </a>
+                {% endif %}                
+            </td>
+    	</tr>
+    	{% endfor %}
+    </table>
+    {{ knp_pagination_render(pagination) }}
+{% endblock %}

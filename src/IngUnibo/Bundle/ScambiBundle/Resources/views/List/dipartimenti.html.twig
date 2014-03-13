@@ -1,0 +1,57 @@
+{% extends 'IngUniboScambiBundle::layout.html.twig' %}
+
+{% block content_header '' %}
+
+{% block content %}
+    {% set version = constant('Symfony\\Component\\HttpKernel\\Kernel::MAJOR_VERSION') ~ '.' ~ constant('Symfony\\Component\\HttpKernel\\Kernel::MINOR_VERSION')%}
+
+    <h1>Elenco dipartimenti per i quali esistono offerte di scambio</h1>
+    <div class="row">
+  <div class="col-md-6">
+    <p>Elementi totali: {{pagination.getTotalItemCount}}</p>
+  </div>
+  <div class="col-md-2">&nbsp;</div>
+  <div class="col-md-4">
+<form class="form-horizontal" action="" method="get" role="form">
+  <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+            <input type="text" class="form-control" placeholder="Ricerca per qualsiasi campo" name="search" value="" disabled="disabled" />
+        </div>
+  </div>
+</form>
+  </div>
+</div>
+
+{{ render(controller('IngUniboScambiBundle:Basket:list', {'callback':'ing_unibo_scambi_list_dipartimenti'})) }}
+    
+    <table class="table">
+    	<tr>
+    		<th{% if pagination.isSorted('d.nome') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Dipartimento', 'd.nome') }}</th>      
+        <th>Seleziona</th>
+    	</tr>
+    	{% for dipartimento in pagination %}
+    	<tr>
+    		<td>
+                <a href="{{path('ing_unibo_scambi_offerte_dipartimento', {'id':dipartimento.nome})}}">{{ dipartimento.nome }}</a>
+            </td>                        
+            <td>
+                {% if ('Dipartimento:' ~ dipartimento.nome) in basket %}
+                <a href="{{path('ing_unibo_scambi_basket_rem', {'key':'Dipartimento:' ~ dipartimento.nome, 'callback':'ing_unibo_scambi_list_dipartimenti'})}}">
+                <button type="button" class="btn btn-xs btn-default">
+                    <span class="glyphicon glyphicon-check"></span>
+                </button>
+                </a>                                
+                {% else %}
+                <a href="{{path('ing_unibo_scambi_basket_add', {'key':'Dipartimento:' ~ dipartimento.nome, 'callback':'ing_unibo_scambi_list_dipartimenti'})}}">
+                <button type="button" class="btn btn-xs btn-default">
+                    <span class="glyphicon glyphicon-unchecked"></span>
+                </button>
+                </a>
+                {% endif %}                 
+            </td>
+    	</tr>
+    	{% endfor %}
+    </table>
+    {{ knp_pagination_render(pagination) }}
+{% endblock %}

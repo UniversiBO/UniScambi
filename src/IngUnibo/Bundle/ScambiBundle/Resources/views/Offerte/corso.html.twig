@@ -1,0 +1,52 @@
+{% extends 'IngUniboScambiBundle::layout.html.twig' %}
+
+{% block content_header '' %}
+
+{% block content %}
+    {% set version = constant('Symfony\\Component\\HttpKernel\\Kernel::MAJOR_VERSION') ~ '.' ~ constant('Symfony\\Component\\HttpKernel\\Kernel::MINOR_VERSION')%}
+
+    <h1>Lista offerte disponibili per il corso {{ corso.id }} - {{ corso.nome }}</h1>
+    <div class="row">
+  <div class="col-md-6">
+    <p>Elementi totali: {{pagination.getTotalItemCount}}</p>
+    <p>Numero posti di scambio concorrenti: {{tot_posti}}</p>
+  </div>
+  <div class="col-md-2">&nbsp;</div>
+  <div class="col-md-4">
+<form class="form-horizontal" action="" method="get" role="form">
+  <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+            <input type="text" class="form-control" placeholder="Ricerca per qualsiasi campo" name="search" value="" disabled="disabled" />
+        </div>
+  </div>
+</form>
+  </div>
+</div>
+    
+    <table class="table">
+    	<tr>
+    		<th{% if pagination.isSorted('o.id') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Id offerta', 'o.id') }}</th>
+    		<th{% if pagination.isSorted('o.posti') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Numero posti', 'o.posti') }}</th>
+    		<th{% if pagination.isSorted('o.nazione') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Nazione', 'o.nazione') }}</th>
+            <th{% if pagination.isSorted('o.ragsociale') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Ragione sociale', 'o.ragsociale') }}</th>       
+    	</tr>
+    	{% for offerta in pagination %}
+    	<tr>
+    		<td>
+                {{ offerta.id }}
+            </td>
+            <td>
+                {{ offerta.posti }}
+            </td>
+            <td>
+                {{ offerta.nazione }}
+            </td>
+            <td>
+                {{ offerta.ragsociale }}
+            </td>           
+    	</tr>
+    	{% endfor %}
+    </table>
+    {{ knp_pagination_render(pagination) }}
+{% endblock %}

@@ -1,0 +1,4 @@
+ing_unibo_scambi:
+    resource: "@IngUniboScambiBundle/Resources/config/routing.yml"
+    prefix:   /
+

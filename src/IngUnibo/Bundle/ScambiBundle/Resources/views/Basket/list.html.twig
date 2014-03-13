@@ -1,0 +1,26 @@
+        {% if basket is empty %}
+        {% else %}
+        <div class="row">
+          <div class="col-md-10">
+            <p>  
+          {% for item in basket %}
+            <span class="label label-default">{{item}} 
+            <a href="{{path('ing_unibo_scambi_basket_rem', {'key':item, 'callback':callback})}}"><span class="glyphicon glyphicon-remove"></span></a>
+            </span>&nbsp;
+          {% endfor %}
+            </p>
+          </div>  
+          <div class="col-md-2">
+                <a href="{{path('ing_unibo_scambi_basket_empty', {'callback':callback})}}">
+                <button type="button" class="btn btn-danger btn-xs">
+                    <span class="glyphicon glyphicon-trash"></span> Svuota
+                </button>
+                </a>&nbsp;          
+                <a href="{{path('ing_unibo_scambi_basket_union')}}">
+                <button type="button" class="btn btn-success btn-xs">
+                    <span class="glyphicon glyphicon-resize-full"></span> Unisci
+                </button>
+                </a>             
+          </div>                 
+        </div>            
+        {% endif %}
