@@ -48,5 +48,19 @@
     	</tr>
     	{% endfor %}
     </table>
+
+    <div class="row">
+  <div class="col-md-6">
     {{ knp_pagination_render(pagination) }}
+  </div>
+  <div class="col-md-4">&nbsp;</div>
+  <div class="col-md-2">
+        <a href="{{path('ing_unibo_scambi_basket_union')}}?export=csv">
+        <button type="button" class="btn btn-success">
+        <span class="glyphicon glyphicon-export"></span> Esporta csv
+        </button>
+        </a> 
+  </div>
+</div>
+
 {% endblock %}

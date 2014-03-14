@@ -1,0 +1,4 @@
+"id","posti","nazione","ragsociale"
+{% for offerta in offerte %}
+"{{ offerta.id }}",{{ offerta.posti }},"{{ offerta.nazione }}","{{ offerta.ragsociale }}"
+{% endfor %}

@@ -5,6 +5,8 @@ namespace IngUnibo\Bundle\ScambiBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use IngUnibo\Bundle\ScambiBundle\Entity\Corso;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class BasketController extends Controller
 {
@@ -92,8 +94,19 @@ WHERE
             $stmt->bindValue($j, $val[$j]);
         }
 
-        if($this->get('request')->query->get('export')=='excel'){
+        if($this->get('request')->query->get('export')=='csv'){
+            $offerte = $query->getResult();
+            $engine = $this->container->get('templating');
+            $content = $engine->render('IngUniboScambiBundle:Basket:union.csv.twig', array('offerte' => $offerte));            
             
+            $response = new Response(
+                $content,
+                200,
+                array('content-type' => 'text/csv')
+            );            
+            $d = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, 'export.csv');
+            $response->headers->set('Content-Disposition', $d); 
+            return $response;           
         }
 
         $stmt->execute();

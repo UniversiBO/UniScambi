@@ -5,6 +5,8 @@ namespace IngUnibo\Bundle\ScambiBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use IngUnibo\Bundle\ScambiBundle\Entity\Corso;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class OfferteController extends Controller
 {
@@ -25,9 +27,21 @@ class OfferteController extends Controller
             FROM IngUniboScambiBundle:Offerta o JOIN o.corsi c WHERE c.id = :id'
         )->setParameter('id', $id);
 
-        if($this->get('request')->query->get('export')=='excel'){
+        if($this->get('request')->query->get('export')=='csv'){
+            $offerte = $query->getResult();
+            $engine = $this->container->get('templating');
+            $content = $engine->render('IngUniboScambiBundle:Offerte:export.csv.twig', array('offerte' => $offerte));            
+            
+            $response = new Response(
+                $content,
+                200,
+                array('content-type' => 'text/csv')
+            );            
+            $d = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, 'export.csv');
+            $response->headers->set('Content-Disposition', $d); 
+            return $response;           
+        }
 
-        }        
 
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
@@ -65,9 +79,20 @@ WHERE
             FROM IngUniboScambiBundle:Offerta o JOIN o.corsi c WHERE c.dipartimento = :id'
         )->setParameter('id', $id);
 
-        if($this->get('request')->query->get('export')=='excel'){
-
-        }     
+        if($this->get('request')->query->get('export')=='csv'){
+            $offerte = $query->getResult();
+            $engine = $this->container->get('templating');
+            $content = $engine->render('IngUniboScambiBundle:Offerte:export.csv.twig', array('offerte' => $offerte));            
+            
+            $response = new Response(
+                $content,
+                200,
+                array('content-type' => 'text/csv')
+            );            
+            $d = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, 'export.csv');
+            $response->headers->set('Content-Disposition', $d); 
+            return $response;           
+        }
 
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
@@ -105,8 +130,19 @@ WHERE
             FROM IngUniboScambiBundle:Offerta o JOIN o.corsi c WHERE c.sede = :id'
         )->setParameter('id', $id);
 
-        if($this->get('request')->query->get('export')=='excel'){
-
+        if($this->get('request')->query->get('export')=='csv'){
+            $offerte = $query->getResult();
+            $engine = $this->container->get('templating');
+            $content = $engine->render('IngUniboScambiBundle:Offerte:export.csv.twig', array('offerte' => $offerte));            
+            
+            $response = new Response(
+                $content,
+                200,
+                array('content-type' => 'text/csv')
+            );            
+            $d = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, 'export.csv');
+            $response->headers->set('Content-Disposition', $d); 
+            return $response;           
         }  
 
         $paginator  = $this->get('knp_paginator');
